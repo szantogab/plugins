@@ -968,7 +968,7 @@ class Camera
     float maxZoom = zoomLevel.getMaximumZoomLevel();
     float minZoom = zoomLevel.getMinimumZoomLevel();
 
-    if (zoom > maxZoom || zoom < minZoom) {
+/*    if (zoom > maxZoom || zoom < minZoom) {
       String errorMessage =
           String.format(
               Locale.ENGLISH,
@@ -977,7 +977,7 @@ class Camera
               maxZoom);
       result.error("ZOOM_ERROR", errorMessage, null);
       return;
-    }
+    }*/
 
     zoomLevel.setValue(zoom);
     zoomLevel.updateBuilder(previewRequestBuilder);
