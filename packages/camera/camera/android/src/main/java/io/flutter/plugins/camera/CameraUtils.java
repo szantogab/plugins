@@ -94,7 +94,25 @@ public final class CameraUtils {
   public static List<Map<String, Object>> getAvailableCameras(Activity activity)
       throws CameraAccessException {
     CameraManager cameraManager = (CameraManager) activity.getSystemService(Context.CAMERA_SERVICE);
-    String[] cameraNames = cameraManager.getCameraIdList();
+
+    List<String> cameraNames = new ArrayList<>();
+    cameraNames.addAll(cameraManager.getCameraIdList());
+
+    // this is a hack because sometimes getCameraIdList() doesn't return all cameras, and physical IDs would be null.
+    if (logicalCameraIds.size() <= 2) {
+      // try to see if there's other IDs as well.
+      for (int i = 0; i<=3; i++) {
+        if (!cameraNames.contains(Integer.toString(i))) {
+          try {
+            cameraManager.getCameraCharacteristics(Integer.toString(i));
+            cameraNames.add(Integer.toString(i));
+          } catch (Exception e) {
+            // ignored
+          }
+        }
+      }
+    }
+
     List<Map<String, Object>> cameras = new ArrayList<>();
     for (String cameraName : cameraNames) {
       int cameraId;
