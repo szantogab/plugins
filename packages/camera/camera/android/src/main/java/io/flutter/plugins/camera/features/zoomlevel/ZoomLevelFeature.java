@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import android.hardware.camera2.CaptureRequest;
 import io.flutter.plugins.camera.CameraProperties;
 import io.flutter.plugins.camera.features.CameraFeature;
+import android.util.Log;
 
 /** Controls the zoom configuration on the {@link android.hardware.camera2} API. */
 public class ZoomLevelFeature extends CameraFeature<Float> {
