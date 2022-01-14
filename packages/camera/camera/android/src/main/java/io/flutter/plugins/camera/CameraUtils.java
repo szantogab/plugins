@@ -99,7 +99,7 @@ public final class CameraUtils {
     cameraNames.addAll(cameraManager.getCameraIdList());
 
     // this is a hack because sometimes getCameraIdList() doesn't return all cameras, and physical IDs would be null.
-    if (logicalCameraIds.size() <= 2) {
+    if (cameraNames.size() <= 2) {
       // try to see if there's other IDs as well.
       for (int i = 0; i<=3; i++) {
         if (!cameraNames.contains(Integer.toString(i))) {
