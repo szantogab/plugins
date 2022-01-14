@@ -68,6 +68,7 @@ public class ZoomLevelFeature extends CameraFeature<Float> {
       return;
     }
 
+    Log.d("flutter_camera", "zoom level: " + currentSetting);
     requestBuilder.set(CaptureRequest.CONTROL_ZOOM_RATIO, currentSetting);
   }
 
