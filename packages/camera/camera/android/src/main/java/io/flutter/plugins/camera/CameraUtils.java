@@ -96,7 +96,7 @@ public final class CameraUtils {
     CameraManager cameraManager = (CameraManager) activity.getSystemService(Context.CAMERA_SERVICE);
 
     List<String> cameraNames = new ArrayList<>();
-    cameraNames.addAll(cameraManager.getCameraIdList());
+    cameraNames.addAll(Arrays.asList(cameraManager.getCameraIdList()));
 
     // this is a hack because sometimes getCameraIdList() doesn't return all cameras, and physical IDs would be null.
     if (cameraNames.size() <= 2) {
