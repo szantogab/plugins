@@ -41,7 +41,8 @@ public class ImageSaver implements Runnable {
   @Override
   public void run() {
     ByteBuffer buffer = image.getPlanes()[0].getBuffer();
-    byte[] bytes = new byte[buffer.remaining()];
+
+    byte[] bytes = new byte[buffer.capacity()];
     buffer.get(bytes);
     FileOutputStream output = null;
     try {
