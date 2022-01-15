@@ -548,6 +548,11 @@ class Camera
     CaptureRequest.Builder stillBuilder;
     try {
       stillBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
+      stillBuilder.set(CaptureRequest.CONTROL_CAPTURE_INTENT, CaptureRequest.CONTROL_CAPTURE_INTENT_STILL_CAPTURE);
+      stillBuilder.set(CaptureRequest.JPEG_QUALITY, (byte)95);
+      /*if (Arrays.asList(cameraProperties.getAvailableNoiseReductionModes()).contains(CaptureRequest.NOISE_REDUCTION_MODE_HIGH_QUALITY)) */stillBuilder.set(CaptureRequest.NOISE_REDUCTION_MODE, CaptureRequest.NOISE_REDUCTION_MODE_HIGH_QUALITY);
+      stillBuilder.set(CaptureRequest.EDGE_MODE, CaptureRequest.EDGE_MODE_HIGH_QUALITY);
+      stillBuilder.set(CaptureRequest.LENS_OPTICAL_STABILIZATION_MODE, CaptureRequest.LENS_OPTICAL_STABILIZATION_MODE_ON);
     } catch (CameraAccessException e) {
       dartMessenger.error(flutterResult, "cameraAccess", e.getMessage(), null);
       return;

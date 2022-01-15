@@ -18,7 +18,7 @@ import java.util.HashMap;
  * https://developer.android.com/reference/android/hardware/camera2/CameraCharacteristics#NOISE_REDUCTION_AVAILABLE_NOISE_REDUCTION_MODES
  */
 public class NoiseReductionFeature extends CameraFeature<NoiseReductionMode> {
-  private NoiseReductionMode currentSetting = NoiseReductionMode.fast;
+  private NoiseReductionMode currentSetting = NoiseReductionMode.highQuality;
 
   private final HashMap<NoiseReductionMode, Integer> NOISE_REDUCTION_MODES = new HashMap<>();
 
