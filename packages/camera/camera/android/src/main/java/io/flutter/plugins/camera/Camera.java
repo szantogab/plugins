@@ -343,6 +343,7 @@ class Camera
 
     // Build Flutter surface to render to.
     ResolutionFeature resolutionFeature = cameraFeatures.getResolution();
+
     SurfaceTexture surfaceTexture = flutterTexture.surfaceTexture();
     surfaceTexture.setDefaultBufferSize(
         resolutionFeature.getPreviewSize().getWidth(),
@@ -565,6 +566,7 @@ class Camera
       dartMessenger.error(flutterResult, "cameraAccess", e.getMessage(), null);
       return;
     }
+
     stillBuilder.addTarget(pictureImageReader.getSurface());
 
     // Zoom.
