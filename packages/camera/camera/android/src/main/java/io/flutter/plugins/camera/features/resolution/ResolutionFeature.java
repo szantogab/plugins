@@ -6,6 +6,7 @@ package io.flutter.plugins.camera.features.resolution;
 
 import android.annotation.TargetApi;
 import android.hardware.camera2.CameraCharacteristics;
+import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
 import android.media.CamcorderProfile;
 import android.media.EncoderProfiles;
@@ -16,6 +17,8 @@ import androidx.annotation.VisibleForTesting;
 import io.flutter.plugins.camera.CameraProperties;
 import io.flutter.plugins.camera.features.CameraFeature;
 import java.util.List;
+
+import static io.flutter.plugins.camera.CameraUtils.computeBestCaptureSize;
 
 /**
  * Controls the resolutions configuration on the {@link android.hardware.camera2} API.
@@ -246,7 +249,7 @@ public class ResolutionFeature extends CameraFeature<ResolutionPreset> {
       captureSize = new Size(defaultVideoProfile.getWidth(), defaultVideoProfile.getHeight());
     } else {
       /*if (enableTakePictureWithMaxResolution) {*/
-        captureSize = new Size(cameraProperties.getSensorInfoActiveArraySize().width(), cameraProperties.getSensorInfoActiveArraySize().height());
+        //captureSize = new Size(cameraProperties.getSensorInfoActiveArraySize().width(), cameraProperties.getSensorInfoActiveArraySize().height());
       /*} else {
         @SuppressWarnings("deprecation")
         CamcorderProfile camcorderProfile =
@@ -256,7 +259,7 @@ public class ResolutionFeature extends CameraFeature<ResolutionPreset> {
       }*/
     }
 
-    captureSize = new Size(4608, 3456);
+    captureSize = computeBestCaptureSize(cameraProperties.getStreamConfigurationMap());
 
     previewSize = computeBestPreviewSize(cameraId, resolutionPreset);
 

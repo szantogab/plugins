@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
+import android.hardware.camera2.params.StreamConfigurationMap;
 import android.os.Build.VERSION_CODES;
 import android.util.Range;
 import android.util.Rational;
@@ -203,6 +204,8 @@ public interface CameraProperties {
    */
   int getSensorOrientation();
 
+  StreamConfigurationMap getStreamConfigurationMap();
+
   /**
    * Returns a level which generally classifies the overall set of the camera device functionality.
    *
@@ -335,6 +338,11 @@ class CameraPropertiesImpl implements CameraProperties {
   @Override
   public int getSensorOrientation() {
     return cameraCharacteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
+  }
+
+  @Override
+  public StreamConfigurationMap getStreamConfigurationMap() {
+    return cameraCharacteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
   }
 
   @Override

@@ -6,16 +6,16 @@ package io.flutter.plugins.camera;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.ImageFormat;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CameraMetadata;
+import android.hardware.camera2.params.StreamConfigurationMap;
+import android.util.Size;
 import io.flutter.embedding.engine.systemchannels.PlatformChannel;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Arrays;
+
+import java.util.*;
 
 /** Provides various utilities for camera. */
 public final class CameraUtils {
@@ -148,4 +148,21 @@ public final class CameraUtils {
     }
     return cameras;
   }
+
+  public static Size computeBestCaptureSize(StreamConfigurationMap streamConfigurationMap) {
+    // For still image captures, we use the largest available size.
+    return Collections.max(
+            Arrays.asList(streamConfigurationMap.getOutputSizes(ImageFormat.JPEG)),
+            new CompareSizesByArea());
+  }
+
+  private static class CompareSizesByArea implements Comparator<Size> {
+    @Override
+    public int compare(Size lhs, Size rhs) {
+      // We cast here to ensure the multiplications won't overflow.
+      return Long.signum(
+              (long) lhs.getWidth() * lhs.getHeight() - (long) rhs.getWidth() * rhs.getHeight());
+    }
+  }
+
 }
