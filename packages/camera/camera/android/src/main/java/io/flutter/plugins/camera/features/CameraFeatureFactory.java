@@ -77,7 +77,8 @@ public interface CameraFeatureFactory {
   ResolutionFeature createResolutionFeature(
       @NonNull CameraProperties cameraProperties,
       ResolutionPreset initialSetting,
-      String cameraName);
+      String cameraName,
+      boolean enableTakePictureWithMaxResolution);
 
   /**
    * Creates a new instance of the focus point feature.

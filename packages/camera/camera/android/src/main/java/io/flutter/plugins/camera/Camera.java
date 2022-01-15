@@ -73,6 +73,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Executors;
+import static io.flutter.plugins.camera.CameraUtils.computeBestCaptureSize;
 
 @FunctionalInterface
 interface ErrorCallback {
@@ -101,6 +102,7 @@ class Camera
 
   private final SurfaceTextureEntry flutterTexture;
   private final boolean enableAudio;
+  private final boolean enableTakePictureWithMaxResolution;
   private final Context applicationContext;
   private final DartMessenger dartMessenger;
   private final CameraProperties cameraProperties;
@@ -143,13 +145,16 @@ class Camera
       final DartMessenger dartMessenger,
       final CameraProperties cameraProperties,
       final ResolutionPreset resolutionPreset,
-      final boolean enableAudio) {
+      final boolean enableTakePictureWithMaxResolution,
+      final boolean enableAudio
+      ) {
 
     if (activity == null) {
       throw new IllegalStateException("No activity available!");
     }
     this.activity = activity;
     this.enableAudio = enableAudio;
+    this.enableTakePictureWithMaxResolution = enableTakePictureWithMaxResolution;
     this.flutterTexture = flutterTexture;
     this.dartMessenger = dartMessenger;
     this.applicationContext = activity.getApplicationContext();
@@ -157,7 +162,7 @@ class Camera
     this.cameraFeatureFactory = cameraFeatureFactory;
     this.cameraFeatures =
         CameraFeatures.init(
-            cameraFeatureFactory, cameraProperties, activity, dartMessenger, resolutionPreset);
+            cameraFeatureFactory, cameraProperties, activity, dartMessenger, resolutionPreset, enableTakePictureWithMaxResolution);
 
     // Create capture callback.
     captureTimeouts = new CaptureTimeoutsWrapper(3000, 3000);

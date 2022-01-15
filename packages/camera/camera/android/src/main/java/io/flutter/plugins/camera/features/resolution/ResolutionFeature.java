@@ -5,10 +5,12 @@
 package io.flutter.plugins.camera.features.resolution;
 
 import android.annotation.TargetApi;
+import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CaptureRequest;
 import android.media.CamcorderProfile;
 import android.media.EncoderProfiles;
 import android.os.Build;
+import android.util.Log;
 import android.util.Size;
 import androidx.annotation.VisibleForTesting;
 import io.flutter.plugins.camera.CameraProperties;
@@ -28,6 +30,7 @@ public class ResolutionFeature extends CameraFeature<ResolutionPreset> {
   private CamcorderProfile recordingProfileLegacy;
   private EncoderProfiles recordingProfile;
   private ResolutionPreset currentSetting;
+  private boolean enableTakePictureWithMaxResolution;
   private int cameraId;
 
   /**
@@ -38,9 +41,10 @@ public class ResolutionFeature extends CameraFeature<ResolutionPreset> {
    * @param cameraName Camera identifier of the camera for which to configure the resolution.
    */
   public ResolutionFeature(
-      CameraProperties cameraProperties, ResolutionPreset resolutionPreset, String cameraName) {
+      CameraProperties cameraProperties, ResolutionPreset resolutionPreset, String cameraName, boolean enableTakePictureWithMaxResolution) {
     super(cameraProperties);
     this.currentSetting = resolutionPreset;
+    this.enableTakePictureWithMaxResolution = enableTakePictureWithMaxResolution;
     try {
       this.cameraId = Integer.parseInt(cameraName, 10);
     } catch (NumberFormatException e) {
@@ -243,13 +247,19 @@ public class ResolutionFeature extends CameraFeature<ResolutionPreset> {
       EncoderProfiles.VideoProfile defaultVideoProfile = videoProfiles.get(0);
       captureSize = new Size(defaultVideoProfile.getWidth(), defaultVideoProfile.getHeight());
     } else {
-      @SuppressWarnings("deprecation")
-      CamcorderProfile camcorderProfile =
-          getBestAvailableCamcorderProfileForResolutionPresetLegacy(cameraId, resolutionPreset);
-      recordingProfileLegacy = camcorderProfile;
-      captureSize =
-          new Size(recordingProfileLegacy.videoFrameWidth, recordingProfileLegacy.videoFrameHeight);
+      if (enableTakePictureWithMaxResolution) {
+        captureSize = new Size(cameraProperties.getSensorInfoActiveArraySize().width(), cameraProperties.getSensorInfoActiveArraySize().height());
+      } else {
+        @SuppressWarnings("deprecation")
+        CamcorderProfile camcorderProfile =
+                getBestAvailableCamcorderProfileForResolutionPresetLegacy(cameraId, resolutionPreset);
+        recordingProfileLegacy = camcorderProfile;
+        captureSize = new Size(recordingProfileLegacy.videoFrameWidth, recordingProfileLegacy.videoFrameHeight);
+      }
     }
+
+    Log.i("Camera", "[Preview Resolution] :" + previewSize);
+    Log.i("Camera", "[Capture Resolution] :" + captureSize);
 
     previewSize = computeBestPreviewSize(cameraId, resolutionPreset);
   }
