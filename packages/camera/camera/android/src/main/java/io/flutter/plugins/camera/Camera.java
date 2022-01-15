@@ -237,9 +237,11 @@ class Camera
     // Always capture using JPEG format.
     pictureImageReader =
         ImageReader.newInstance(
-            resolutionFeature.getCaptureSize().getWidth(),
-            resolutionFeature.getCaptureSize().getHeight(),
-            ImageFormat.YUV_420_888,
+            /*resolutionFeature.getCaptureSize().getWidth(),
+            resolutionFeature.getCaptureSize().getHeight(),*/
+                resolutionFeature.getPreviewSize().getWidth(),
+                resolutionFeature.getPreviewSize().getHeight(),
+            ImageFormat.JPEG,
             1);
 
     // For image streaming, use the provided image format or fall back to YUV420.
