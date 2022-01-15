@@ -54,9 +54,8 @@ public class CameraFeatureFactoryImpl implements CameraFeatureFactory {
   public ResolutionFeature createResolutionFeature(
       @NonNull CameraProperties cameraProperties,
       ResolutionPreset initialSetting,
-      String cameraName,
-      boolean enableTakePictureWithMaxResolution) {
-    return new ResolutionFeature(cameraProperties, initialSetting, cameraName, enableTakePictureWithMaxResolution);
+      String cameraName) {
+    return new ResolutionFeature(cameraProperties, initialSetting, cameraName);
   }
 
   @Override

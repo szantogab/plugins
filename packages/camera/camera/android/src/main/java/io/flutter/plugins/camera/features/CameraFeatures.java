@@ -46,8 +46,7 @@ public class CameraFeatures {
       CameraProperties cameraProperties,
       Activity activity,
       DartMessenger dartMessenger,
-      ResolutionPreset resolutionPreset,
-      boolean enableTakePictureWithMaxResolution) {
+      ResolutionPreset resolutionPreset) {
     CameraFeatures cameraFeatures = new CameraFeatures();
     cameraFeatures.setAutoFocus(
         cameraFeatureFactory.createAutoFocusFeature(cameraProperties, false));
@@ -70,7 +69,7 @@ public class CameraFeatures {
         cameraFeatureFactory.createNoiseReductionFeature(cameraProperties));
     cameraFeatures.setResolution(
         cameraFeatureFactory.createResolutionFeature(
-            cameraProperties, resolutionPreset, cameraProperties.getCameraName(), enableTakePictureWithMaxResolution));
+            cameraProperties, resolutionPreset, cameraProperties.getCameraName()));
     cameraFeatures.setZoomLevel(cameraFeatureFactory.createZoomLevelFeature(cameraProperties));
     return cameraFeatures;
   }

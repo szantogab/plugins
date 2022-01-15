@@ -101,7 +101,6 @@ class Camera
 
   private final SurfaceTextureEntry flutterTexture;
   private final boolean enableAudio;
-  private final boolean enableTakePictureWithMaxResolution;
   private final Context applicationContext;
   private final DartMessenger dartMessenger;
   private final CameraProperties cameraProperties;
@@ -144,7 +143,6 @@ class Camera
       final DartMessenger dartMessenger,
       final CameraProperties cameraProperties,
       final ResolutionPreset resolutionPreset,
-      final boolean enableTakePictureWithMaxResolution,
       final boolean enableAudio
       ) {
 
@@ -153,7 +151,6 @@ class Camera
     }
     this.activity = activity;
     this.enableAudio = enableAudio;
-    this.enableTakePictureWithMaxResolution = enableTakePictureWithMaxResolution;
     this.flutterTexture = flutterTexture;
     this.dartMessenger = dartMessenger;
     this.applicationContext = activity.getApplicationContext();
@@ -161,7 +158,7 @@ class Camera
     this.cameraFeatureFactory = cameraFeatureFactory;
     this.cameraFeatures =
         CameraFeatures.init(
-            cameraFeatureFactory, cameraProperties, activity, dartMessenger, resolutionPreset, enableTakePictureWithMaxResolution);
+            cameraFeatureFactory, cameraProperties, activity, dartMessenger, resolutionPreset);
 
     // Create capture callback.
     captureTimeouts = new CaptureTimeoutsWrapper(3000, 3000);
