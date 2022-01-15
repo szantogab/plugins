@@ -548,11 +548,19 @@ class Camera
     CaptureRequest.Builder stillBuilder;
     try {
       stillBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
+      stillBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
       stillBuilder.set(CaptureRequest.CONTROL_CAPTURE_INTENT, CaptureRequest.CONTROL_CAPTURE_INTENT_STILL_CAPTURE);
       stillBuilder.set(CaptureRequest.JPEG_QUALITY, (byte)95);
-      /*if (Arrays.asList(cameraProperties.getAvailableNoiseReductionModes()).contains(CaptureRequest.NOISE_REDUCTION_MODE_HIGH_QUALITY)) */stillBuilder.set(CaptureRequest.NOISE_REDUCTION_MODE, CaptureRequest.NOISE_REDUCTION_MODE_HIGH_QUALITY);
       stillBuilder.set(CaptureRequest.EDGE_MODE, CaptureRequest.EDGE_MODE_HIGH_QUALITY);
       stillBuilder.set(CaptureRequest.LENS_OPTICAL_STABILIZATION_MODE, CaptureRequest.LENS_OPTICAL_STABILIZATION_MODE_ON);
+
+      if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP_MR1) {
+        if (Arrays.asList(cameraProperties.getAvailableSceneModes()).contains(CaptureRequest.CONTROL_SCENE_MODE_HDR)) {
+          stillBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_USE_SCENE_MODE);
+          stillBuilder.set(CaptureRequest.CONTROL_SCENE_MODE, CaptureRequest.CONTROL_SCENE_MODE_HDR);
+          Log.i(TAG, "Scene mode set to HDR");
+        }
+      }
     } catch (CameraAccessException e) {
       dartMessenger.error(flutterResult, "cameraAccess", e.getMessage(), null);
       return;
