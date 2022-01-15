@@ -550,7 +550,7 @@ class Camera
       stillBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
       stillBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
       stillBuilder.set(CaptureRequest.CONTROL_CAPTURE_INTENT, CaptureRequest.CONTROL_CAPTURE_INTENT_STILL_CAPTURE);
-      stillBuilder.set(CaptureRequest.JPEG_QUALITY, (byte)95);
+      stillBuilder.set(CaptureRequest.JPEG_QUALITY, (byte)100);
       stillBuilder.set(CaptureRequest.EDGE_MODE, CaptureRequest.EDGE_MODE_HIGH_QUALITY);
       stillBuilder.set(CaptureRequest.LENS_OPTICAL_STABILIZATION_MODE, CaptureRequest.LENS_OPTICAL_STABILIZATION_MODE_ON);
 
@@ -568,9 +568,9 @@ class Camera
     stillBuilder.addTarget(pictureImageReader.getSurface());
 
     // Zoom.
-    stillBuilder.set(
+    /*stillBuilder.set(
         CaptureRequest.SCALER_CROP_REGION,
-        previewRequestBuilder.get(CaptureRequest.SCALER_CROP_REGION));
+        previewRequestBuilder.get(CaptureRequest.SCALER_CROP_REGION));*/
 
     // Have all features update the builder.
     updateBuilderSettings(stillBuilder);
