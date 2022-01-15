@@ -5,9 +5,11 @@
 package io.flutter.plugins.camera.features.resolution;
 
 import android.annotation.TargetApi;
+import android.graphics.ImageFormat;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
+import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.CamcorderProfile;
 import android.media.EncoderProfiles;
 import android.os.Build;
@@ -16,6 +18,11 @@ import android.util.Size;
 import androidx.annotation.VisibleForTesting;
 import io.flutter.plugins.camera.CameraProperties;
 import io.flutter.plugins.camera.features.CameraFeature;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static io.flutter.plugins.camera.CameraUtils.computeBestCaptureSize;
@@ -259,11 +266,58 @@ public class ResolutionFeature extends CameraFeature<ResolutionPreset> {
       }*/
     }
 
-    captureSize = computeBestCaptureSize(cameraProperties.getStreamConfigurationMap());
+    StreamConfigurationMap configs = cameraProperties.getStreamConfigurationMap();
+    android.util.Size [] camera_picture_sizes = configs.getOutputSizes(ImageFormat.JPEG);
+    List<Size> pictureSizes = new ArrayList<>();
+    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+      android.util.Size [] camera_picture_sizes_hires = configs.getHighResolutionOutputSizes(ImageFormat.JPEG);
+      if (camera_picture_sizes_hires != null) {
+        for(android.util.Size camera_size : camera_picture_sizes_hires) {
+            Log.d("flutter_camera", "high resolution picture size: " + camera_size.getWidth() + " x " + camera_size.getHeight());
+          // Check not already listed? If it's listed in both, we'll add it later on when scanning camera_picture_sizes
+          // (and we don't want to set supports_burst to false for such a resolution).
+          boolean found = false;
+          for (android.util.Size sz : camera_picture_sizes) {
+            if (sz.equals(camera_size)) {
+              found = true;
+              break;
+            }
+          }
+          if( !found ) {
+              Log.d("flutter_camera", "high resolution [non-burst] picture size: " + camera_size.getWidth() + " x " + camera_size.getHeight());
+            Size size = new Size(camera_size.getWidth(), camera_size.getHeight());
+            pictureSizes.add(size);
+          }
+        }
+      }
+    }
 
+    // camera_picture_sizes is null on Samsung Galaxy Note 10+ and S20 for camera ID 4!
+    if (camera_picture_sizes != null) {
+      for(android.util.Size camera_size : camera_picture_sizes) {
+        Log.d("flutter_camera", "picture size: " + camera_size.getWidth() + " x " + camera_size.getHeight());
+        pictureSizes.add(new Size(camera_size.getWidth(), camera_size.getHeight()));
+      }
+    }
+
+    Collections.sort(pictureSizes, new SizeSorter());
+
+    captureSize = pictureSizes.get(0);
     previewSize = computeBestPreviewSize(cameraId, resolutionPreset);
 
     Log.i("Camera", "[Preview Resolution] :" + previewSize);
     Log.i("Camera", "[Capture Resolution] :" + captureSize);
+  }
+
+  /* Sorts resolutions from highest to lowest, by area.
+   * Android docs and FindBugs recommend that Comparators also be Serializable
+   */
+  static class SizeSorter implements Comparator<Size>, Serializable {
+    private static final long serialVersionUID = 5802214721073718212L;
+
+    @Override
+    public int compare(final Size a, final Size b) {
+      return b.getWidth() * b.getHeight() - a.getWidth() * a.getHeight();
+    }
   }
 }

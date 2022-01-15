@@ -240,7 +240,7 @@ class Camera
             resolutionFeature.getCaptureSize().getWidth(),
             resolutionFeature.getCaptureSize().getHeight(),
             ImageFormat.JPEG,
-            1);
+            2);
 
     // For image streaming, use the provided image format or fall back to YUV420.
     Integer imageFormat = supportedImageFormats.get(imageFormatGroup);
