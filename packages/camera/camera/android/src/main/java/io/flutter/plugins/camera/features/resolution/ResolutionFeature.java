@@ -258,9 +258,9 @@ public class ResolutionFeature extends CameraFeature<ResolutionPreset> {
       }
     }
 
+    previewSize = computeBestPreviewSize(cameraId, resolutionPreset);
+
     Log.i("Camera", "[Preview Resolution] :" + previewSize);
     Log.i("Camera", "[Capture Resolution] :" + captureSize);
-
-    previewSize = computeBestPreviewSize(cameraId, resolutionPreset);
   }
 }
