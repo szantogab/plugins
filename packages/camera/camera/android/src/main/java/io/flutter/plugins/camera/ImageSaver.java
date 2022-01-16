@@ -46,6 +46,9 @@ public class ImageSaver implements Runnable {
     buffer.get(bytes);
 
     BitmapFactory.Options options = new BitmapFactory.Options();
+    options.outWidth = image.getWidth();
+    options.outHeight = image.getHeight();
+
     options.inSampleSize = calculateInSampleSize(options, 1920, 1080);
     options.inJustDecodeBounds = false;
 
