@@ -49,7 +49,8 @@ public class ImageSaver implements Runnable {
     options.outWidth = image.getWidth();
     options.outHeight = image.getHeight();
 
-    options.inSampleSize = calculateInSampleSize(options, 1920, 1080);
+    options.inSampleSize = 2;
+    //options.inSampleSize = calculateInSampleSize(options, 1920, 1080);
     options.inJustDecodeBounds = false;
 
     final InputStream inStr = new ByteArrayInputStream(bytes);
