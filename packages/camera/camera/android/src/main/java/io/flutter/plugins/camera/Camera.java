@@ -383,8 +383,8 @@ class Camera
             Log.i(TAG, "Updating builder settings");
             updateBuilderSettings(previewRequestBuilder);
 
-            /*refreshPreviewCaptureSession(
-                onSuccessCallback, (code, message) -> dartMessenger.sendCameraErrorEvent(message));*/
+            refreshPreviewCaptureSession(
+                onSuccessCallback, (code, message) -> dartMessenger.sendCameraErrorEvent(message));
           }
 
           @Override
