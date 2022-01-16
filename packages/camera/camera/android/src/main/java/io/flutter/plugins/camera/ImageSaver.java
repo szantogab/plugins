@@ -57,7 +57,7 @@ public class ImageSaver implements Runnable {
     final Bitmap bitmap = BitmapFactory.decodeStream(inStr, null, options);
 
     ByteArrayOutputStream bos = new ByteArrayOutputStream();
-    bitmap.compress(Bitmap.CompressFormat.JPEG, 95, bos);
+    bitmap.compress(Bitmap.CompressFormat.WEBP, 90, bos);
     byte[] bitmapdata = bos.toByteArray();
     bitmap.recycle();
     try {
