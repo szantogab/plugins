@@ -255,15 +255,9 @@ public class ResolutionFeature extends CameraFeature<ResolutionPreset> {
       EncoderProfiles.VideoProfile defaultVideoProfile = videoProfiles.get(0);
       captureSize = new Size(defaultVideoProfile.getWidth(), defaultVideoProfile.getHeight());
     } else {
-      /*if (enableTakePictureWithMaxResolution) {*/
-        //captureSize = new Size(cameraProperties.getSensorInfoActiveArraySize().width(), cameraProperties.getSensorInfoActiveArraySize().height());
-      /*} else {
-        @SuppressWarnings("deprecation")
-        CamcorderProfile camcorderProfile =
-                getBestAvailableCamcorderProfileForResolutionPresetLegacy(cameraId, resolutionPreset);
-        recordingProfileLegacy = camcorderProfile;
-        captureSize = new Size(recordingProfileLegacy.videoFrameWidth, recordingProfileLegacy.videoFrameHeight);
-      }*/
+      CamcorderProfile camcorderProfile =
+              getBestAvailableCamcorderProfileForResolutionPresetLegacy(cameraId, resolutionPreset);
+      recordingProfileLegacy = camcorderProfile;
     }
 
     StreamConfigurationMap configs = cameraProperties.getStreamConfigurationMap();
