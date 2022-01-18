@@ -311,13 +311,17 @@ public class ResolutionFeature extends CameraFeature<ResolutionPreset> {
 
     // if couldn't find a video profile matching the aspect ratio, try with still image resolutions
     if ((double)previewSize.getWidth() / (double)previewSize.getHeight() != ratio) {
+      List<Size> previewSizes = new ArrayList<>();
+
       for (int i = pictureSizes.size() - 1; i >= 0; i--) {
         double _ratio = (double)pictureSizes.get(i).getWidth() / (double)pictureSizes.get(i).getHeight();
         if (_ratio == ratio) {
-          previewSize = pictureSizes.get(i);
-          break;
+          previewSizes.add(pictureSizes.get(i));
         }
       }
+
+      previewSizes.sort(Comparator.comparingInt(size -> size.getWidth() * size.getHeight())); // in ascending order
+      if (previewSizes.size() > 0) previewSize = previewSizes.get(previewSizes.size() / 2);
     }
 
     Log.i("Camera", "[Preview Resolution] :" + previewSize);
