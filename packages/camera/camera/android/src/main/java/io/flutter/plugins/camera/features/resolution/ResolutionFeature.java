@@ -131,7 +131,7 @@ public class ResolutionFeature extends CameraFeature<ResolutionPreset> {
           getBestAvailableCamcorderProfileForResolutionPreset(cameraId, preset);
       List<EncoderProfiles.VideoProfile> videoProfiles = new ArrayList<>(profile.getVideoProfiles());
 
-      Collections.sort(videoProfiles, Comparator.comparingInt(o -> o.getWidth() * o.getHeight()));
+      Collections.sort(videoProfiles, Collections.reverseOrder(Comparator.comparingInt(o -> o.getWidth() * o.getHeight())));
 
       for (EncoderProfiles.VideoProfile p : videoProfiles) {
         double r = (double)p.getWidth() / (double)p.getHeight();
