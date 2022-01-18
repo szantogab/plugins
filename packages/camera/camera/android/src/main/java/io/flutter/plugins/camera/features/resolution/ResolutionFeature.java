@@ -129,7 +129,7 @@ public class ResolutionFeature extends CameraFeature<ResolutionPreset> {
     if (Build.VERSION.SDK_INT >= 31) {
       EncoderProfiles profile =
           getBestAvailableCamcorderProfileForResolutionPreset(cameraId, preset);
-      List<EncoderProfiles.VideoProfile> videoProfiles = profile.getVideoProfiles();
+      List<EncoderProfiles.VideoProfile> videoProfiles = new ArrayList<>(profile.getVideoProfiles());
 
       Collections.sort(videoProfiles, Comparator.comparingInt(o -> o.getWidth() * o.getHeight()));
 
