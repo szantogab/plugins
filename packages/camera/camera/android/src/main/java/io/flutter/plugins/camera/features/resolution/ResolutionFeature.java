@@ -297,7 +297,17 @@ public class ResolutionFeature extends CameraFeature<ResolutionPreset> {
     Collections.sort(pictureSizes, new SizeSorter());
 
     captureSize = pictureSizes.get(0);
-    previewSize = computeBestPreviewSize(cameraId, resolutionPreset);
+    double ratio = (double)captureSize.getWidth() / (double)captureSize.getHeight();
+
+    for (int i = pictureSizes.size() - 1; i >= 0; i--) {
+      double _ratio = (double)pictureSizes.get(i).getWidth() / (double)pictureSizes.get(i).getHeight();
+      if (_ratio == ratio) {
+        previewSize = pictureSizes.get(i);
+        break;
+      }
+    }
+
+    if (previewSize == null) previewSize = computeBestPreviewSize(cameraId, resolutionPreset);
 
     Log.i("Camera", "[Preview Resolution] :" + previewSize);
     Log.i("Camera", "[Capture Resolution] :" + captureSize);
