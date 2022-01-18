@@ -121,7 +121,7 @@ public class ResolutionFeature extends CameraFeature<ResolutionPreset> {
   }
 
   @VisibleForTesting
-  static Size computeBestPreviewSize(int cameraId, ResolutionPreset preset)
+  static Size computeBestPreviewSize(int cameraId, ResolutionPreset preset, double aspectRatio)
       throws IndexOutOfBoundsException {
     if (preset.ordinal() > ResolutionPreset.high.ordinal()) {
       preset = ResolutionPreset.high;
@@ -130,8 +130,17 @@ public class ResolutionFeature extends CameraFeature<ResolutionPreset> {
       EncoderProfiles profile =
           getBestAvailableCamcorderProfileForResolutionPreset(cameraId, preset);
       List<EncoderProfiles.VideoProfile> videoProfiles = profile.getVideoProfiles();
-      EncoderProfiles.VideoProfile defaultVideoProfile = videoProfiles.get(0);
 
+      Collections.sort(videoProfiles, Comparator.comparingInt(o -> o.getWidth() * o.getHeight()));
+
+      for (EncoderProfiles.VideoProfile p : videoProfiles) {
+        double r = (double)p.getWidth() / (double)p.getHeight();
+        if (r == aspectRatio) {
+          return new Size(p.getWidth(), p.getHeight());
+        }
+      }
+
+      EncoderProfiles.VideoProfile defaultVideoProfile = videoProfiles.get(0);
       return new Size(defaultVideoProfile.getWidth(), defaultVideoProfile.getHeight());
     } else {
       @SuppressWarnings("deprecation")
@@ -298,16 +307,18 @@ public class ResolutionFeature extends CameraFeature<ResolutionPreset> {
 
     captureSize = pictureSizes.get(0);
     double ratio = (double)captureSize.getWidth() / (double)captureSize.getHeight();
+    previewSize = computeBestPreviewSize(cameraId, resolutionPreset, ratio);
 
-    for (int i = pictureSizes.size() - 1; i >= 0; i--) {
-      double _ratio = (double)pictureSizes.get(i).getWidth() / (double)pictureSizes.get(i).getHeight();
-      if (_ratio == ratio) {
-        previewSize = pictureSizes.get(i);
-        break;
+    // if couldn't find a video profile matching the aspect ratio, try with still image resolutions
+    if ((double)previewSize.getWidth() / (double)previewSize.getHeight() != ratio) {
+      for (int i = pictureSizes.size() - 1; i >= 0; i--) {
+        double _ratio = (double)pictureSizes.get(i).getWidth() / (double)pictureSizes.get(i).getHeight();
+        if (_ratio == ratio) {
+          previewSize = pictureSizes.get(i);
+          break;
+        }
       }
     }
-
-    if (previewSize == null) previewSize = computeBestPreviewSize(cameraId, resolutionPreset);
 
     Log.i("Camera", "[Preview Resolution] :" + previewSize);
     Log.i("Camera", "[Capture Resolution] :" + captureSize);
