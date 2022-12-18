@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.net.Uri;
+import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
@@ -55,11 +56,17 @@ public class ImageSaver implements Runnable {
 
     final InputStream inStr = new ByteArrayInputStream(bytes);
     final Bitmap bitmap = BitmapFactory.decodeStream(inStr, null, options);
+    if (bitmap == null) {
+      Log.d("ImageSaver", "Failed to decode bitmap.");
+      callback.onError("IOError", "Failed to decode bitmap");
+      return;
+    }
 
     ByteArrayOutputStream bos = new ByteArrayOutputStream();
-    bitmap.compress(Bitmap.CompressFormat.WEBP, 90, bos);
+    bitmap.compress(Bitmap.CompressFormat.WEBP_LOSSY, 90, bos);
     byte[] bitmapdata = bos.toByteArray();
     bitmap.recycle();
+
     try {
       inStr.close();
       bos.close();
