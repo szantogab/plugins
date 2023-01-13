@@ -105,9 +105,9 @@ public class MediaRecorderBuilder {
                 mediaRecorder.setAudioEncodingBitRate(audioProfile.getBitrate());
                 mediaRecorder.setAudioSamplingRate(audioProfile.getSampleRate());
             }
-            mediaRecorder.setVideoEncoder(Build.VERSION.SDK_INT >= 33 ? MediaRecorder.VideoEncoder.VP9 : MediaRecorder.VideoEncoder.HEVC);
-            mediaRecorder.setVideoEncodingBitRate(5000 * 1000);
-            mediaRecorder.setVideoFrameRate(24);
+            mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.HEVC);
+            mediaRecorder.setVideoEncodingBitRate(6000 * 1000);
+            mediaRecorder.setVideoFrameRate(20);
             mediaRecorder.setVideoSize(videoProfile.getWidth(), videoProfile.getHeight());
             mediaRecorder.setVideoSize(videoProfile.getWidth(), videoProfile.getHeight());
         } else {

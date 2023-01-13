@@ -30,7 +30,7 @@ android {
     compileSdkVersion 33
 
     defaultConfig {
-        targetSdkVersion 33
+        targetSdkVersion 30
         minSdkVersion 30
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
