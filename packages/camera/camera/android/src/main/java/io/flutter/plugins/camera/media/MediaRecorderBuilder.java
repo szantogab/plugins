@@ -85,7 +85,7 @@ public class MediaRecorderBuilder {
       for (int i = 0; i < encoderProfiles.getVideoProfiles().size(); i++) {
         EncoderProfiles.VideoProfile curVideoProfile = encoderProfiles.getVideoProfiles().get(i);
 
-        Log.d("MediaRecorderBuilder", "Video codec: " + curVideoProfile.getCodec().toString + ", bitrate: " + curVideoProfile.getBitrate().toString());
+        Log.d("MediaRecorderBuilder", "Video codec: " + curVideoProfile.getCodec().toString() + ", bitrate: " + curVideoProfile.getBitrate().toString());
 
         if (curVideoProfile.getCodec() == MediaRecorder.VideoEncoder.HEVC) {
           if (videoProfile.getCodec() != MediaRecorder.VideoEncoder.HEVC || videoProfile.getBitrate() > curVideoProfile.getBitrate()) {
@@ -94,7 +94,7 @@ public class MediaRecorderBuilder {
         }
       }
 
-      Log.d("MediaRecorderBuilder", "Using video codec: " + videoProfile.getCodec().toString + ", bitrate: " + videoProfile.getBitrate().toString());
+      Log.d("MediaRecorderBuilder", "Using video codec: " + videoProfile.getCodec().toString() + ", bitrate: " + videoProfile.getBitrate().toString());
 
       EncoderProfiles.AudioProfile audioProfile = encoderProfiles.getAudioProfiles().get(0);
 
