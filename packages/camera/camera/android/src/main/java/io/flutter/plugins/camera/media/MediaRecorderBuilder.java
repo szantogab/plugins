@@ -104,7 +104,7 @@ public class MediaRecorderBuilder {
         mediaRecorder.setAudioEncodingBitRate(audioProfile.getBitrate());
         mediaRecorder.setAudioSamplingRate(audioProfile.getSampleRate());
       }
-      mediaRecorder.setVideoEncoder(videoProfile.getCodec());
+      mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.HEVC);
       mediaRecorder.setVideoEncodingBitRate(videoProfile.getBitrate());
       mediaRecorder.setVideoFrameRate(videoProfile.getFrameRate());
       mediaRecorder.setVideoSize(videoProfile.getWidth(), videoProfile.getHeight());
