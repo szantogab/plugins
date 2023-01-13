@@ -8,8 +8,11 @@ import android.media.CamcorderProfile;
 import android.media.EncoderProfiles;
 import android.media.MediaRecorder;
 import android.os.Build;
+import android.util.Log;
 import androidx.annotation.NonNull;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MediaRecorderBuilder {
   @SuppressWarnings("deprecation")
@@ -76,7 +79,23 @@ public class MediaRecorderBuilder {
     mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
 
     if (Build.VERSION.SDK_INT >= 31) {
+      List<String> a = new ArrayList<>();
+
       EncoderProfiles.VideoProfile videoProfile = encoderProfiles.getVideoProfiles().get(0);
+      for (int i = 0; i < encoderProfiles.getVideoProfiles().size(); i++) {
+        EncoderProfiles.VideoProfile curVideoProfile = encoderProfiles.getVideoProfiles().get(i);
+
+        Log.d("MediaRecorderBuilder", "Video codec: " + curVideoProfile.getCodec().toString + ", bitrate: " + curVideoProfile.getBitrate().toString());
+
+        if (curVideoProfile.getCodec() == MediaRecorder.VideoEncoder.HEVC) {
+          if (videoProfile.getCodec() != MediaRecorder.VideoEncoder.HEVC || videoProfile.getBitrate() > curVideoProfile.getBitrate()) {
+            videoProfile = curVideoProfile;
+          }
+        }
+      }
+
+      Log.d("MediaRecorderBuilder", "Using video codec: " + videoProfile.getCodec().toString + ", bitrate: " + videoProfile.getBitrate().toString());
+
       EncoderProfiles.AudioProfile audioProfile = encoderProfiles.getAudioProfiles().get(0);
 
       mediaRecorder.setOutputFormat(encoderProfiles.getRecommendedFileFormat());
