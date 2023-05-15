@@ -88,8 +88,8 @@ public class MediaRecorderBuilder {
 
                 Log.d("MediaRecorderBuilder", "Video codec: " + curVideoProfile.getCodec() + ", bitrate: " + curVideoProfile.getBitrate());
 
-                if (curVideoProfile.getCodec() == MediaRecorder.VideoEncoder.HEVC) {
-                    if (videoProfile.getCodec() != MediaRecorder.VideoEncoder.HEVC || videoProfile.getBitrate() > curVideoProfile.getBitrate()) {
+                if (curVideoProfile.getCodec() == MediaRecorder.VideoEncoder.H264) {
+                    if (videoProfile.getCodec() != MediaRecorder.VideoEncoder.H264 || videoProfile.getBitrate() > curVideoProfile.getBitrate()) {
                         videoProfile = curVideoProfile;
                     }
                 }
@@ -105,7 +105,7 @@ public class MediaRecorderBuilder {
                 mediaRecorder.setAudioEncodingBitRate(audioProfile.getBitrate());
                 mediaRecorder.setAudioSamplingRate(audioProfile.getSampleRate());
             }
-            mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.HEVC);
+            mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
             mediaRecorder.setVideoEncodingBitRate(4000 * 1000);
             mediaRecorder.setVideoFrameRate(24);
             mediaRecorder.setVideoSize(videoProfile.getWidth(), videoProfile.getHeight());
